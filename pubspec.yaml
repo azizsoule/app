@@ -47,6 +47,9 @@ dependencies:
   # Use this package to check app connectivity
   connectivity_plus:
 
+  # Assets manager
+  flutter_gen: 
+
   # You can use it to store data in local.
   hive:
   hive_flutter:
