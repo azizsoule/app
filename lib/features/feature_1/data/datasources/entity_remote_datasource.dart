@@ -1,10 +1,14 @@
 import 'package:app/core/datasource/datasource.dart';
+import 'package:app/core/network/network_info.dart';
 import 'package:app/core/services/base_service.dart';
 import 'package:app/features/feature_1/data/models/entity_model.dart';
 
 abstract class IEntityRemoteDatasource extends Datasource<EntityModel, void> {}
 
-class EntityRemoteDatasource extends BaseService implements IEntityRemoteDatasource {
+class EntityRemoteDatasource extends BaseService
+    implements IEntityRemoteDatasource {
+  EntityRemoteDatasource(INetworkInfo networkInfo) : super(networkInfo);
+
   @override
   Future<bool> deleteAll() {
     // TODO: implement deleteAll

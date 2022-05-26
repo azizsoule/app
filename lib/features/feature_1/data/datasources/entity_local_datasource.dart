@@ -1,9 +1,14 @@
 import 'package:app/core/datasource/datasource.dart';
 import 'package:app/features/feature_1/data/models/entity_model.dart';
+import 'package:hive/hive.dart';
 
 abstract class IEntityLocalDatasource extends Datasource<EntityModel, void> {}
 
 class EntityLocalDatasource implements IEntityLocalDatasource {
+  final HiveInterface _hiveInterface;
+
+  EntityLocalDatasource(this._hiveInterface);
+
   @override
   Future<bool> deleteAll() {
     // TODO: implement deleteAll

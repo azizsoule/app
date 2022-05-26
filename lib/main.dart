@@ -1,5 +1,5 @@
 import 'package:app/core/constants/app_constants.dart';
-import 'package:app/core/routes/app_pages.dart';
+import 'package:app/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

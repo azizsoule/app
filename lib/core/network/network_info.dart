@@ -1,19 +1,30 @@
+import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-abstract class NetworkInfo {
+abstract class INetworkInfo {
   Future<bool> get isConnected;
 }
 
-class NetworkInfoImpl implements NetworkInfo {
-  final Connectivity connectivity;
+class NetworkInfo implements INetworkInfo {
+  final Connectivity _connectivity;
 
-  NetworkInfoImpl(this.connectivity);
+  NetworkInfo(this._connectivity);
 
   @override
   Future<bool> get isConnected async {
-    return (await connectivityResult) != ConnectivityResult.none;
+    return (await _connectivityResult) != ConnectivityResult.none &&
+        (await _hasConnection);
   }
 
-  Future<ConnectivityResult> get connectivityResult async =>
-      await connectivity.checkConnectivity();
+  Future<ConnectivityResult> get _connectivityResult async =>
+      await _connectivity.checkConnectivity();
+
+  Future<bool> get _hasConnection async {
+    try {
+      final result = await InternetAddress.lookup('https://www.google.com');
+      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+    } on SocketException catch (_) {
+      return false;
+    }
+  }
 }

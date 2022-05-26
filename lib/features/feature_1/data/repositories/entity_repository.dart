@@ -1,3 +1,5 @@
+import 'package:app/core/error/exceptions.dart';
+import 'package:app/core/functions/functions.dart';
 import 'package:app/features/feature_1/data/datasources/entity_local_datasource.dart';
 import 'package:app/features/feature_1/data/datasources/entity_remote_datasource.dart';
 import 'package:app/features/feature_1/domain/entities/entity.dart';
@@ -12,37 +14,38 @@ class EntityRepository implements IEntityRepository {
   EntityRepository(this._localDatasource, this._remoteDatasource);
 
   @override
-  Future<Either<Failure, bool>> deleteAll() {
-    // TODO: implement deleteAll
-    throw UnimplementedError();
+  Future<Either<Failure, bool>> deleteAll([bool remote = true]) async {
+    return await performOperation(() async {
+      return true;
+    });
   }
 
   @override
-  Future<Either<Failure, bool>> deleteById(void id) {
+  Future<Either<Failure, bool>> deleteById(void id, [bool remote = true]) {
     // TODO: implement deleteById
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, List<Entity>>> getAll() {
+  Future<Either<Failure, List<Entity>>> getAll([bool remote = true]) {
     // TODO: implement getAll
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, Entity>> getById(void id) {
+  Future<Either<Failure, Entity>> getById(void id, [bool remote = true]) {
     // TODO: implement getById
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, Entity>> save(Entity object) {
+  Future<Either<Failure, Entity>> save(Entity object, [bool remote = true]) {
     // TODO: implement save
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, Entity>> update(Entity object) {
+  Future<Either<Failure, Entity>> update(Entity object, [bool remote = true]) {
     // TODO: implement update
     throw UnimplementedError();
   }

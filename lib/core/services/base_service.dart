@@ -1,82 +1,48 @@
-import 'package:app/core/constants/app_endpoints.dart';
+import 'dart:async';
+import 'package:app/core/error/error_messages.dart';
+import 'package:app/core/error/exceptions.dart';
+import 'package:app/core/network/network_info.dart';
+import 'package:app/core/routes/app_endpoints.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get_connect.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
 
 class BaseService<T> extends GetConnect {
+  final INetworkInfo _networkInfo;
+
+  BaseService(this._networkInfo);
+
   @override
   void onInit() {
     httpClient.baseUrl = AppEndpoints.baseUrl;
     httpClient.defaultContentType = "application/json";
     httpClient.timeout = const Duration(seconds: 20);
-    httpClient.addResponseModifier(
-      (request, response) async {
-        if (kDebugMode) {
-          print(
-              "----------------------------------------------------------------------------------------------------");
-          print("[REQUEST] - [${request.method} : ${request.url}]");
-          print("[RESPONSE] - [${response.body}]");
-          print(
-              "----------------------------------------------------------------------------------------------------");
-        }
-      },
-    );
-    httpClient.addRequestModifier<T>((request) async {
-      // Check internet here
-      return request as Request<T>;
-    });
+    httpClient.addResponseModifier<T>(_loggingInterceptor);
+    httpClient.addRequestModifier<T>(_networkInterceptor);
     super.onInit();
   }
 
-  /*List<T> _listDecoder<T>(
-      List encodedItemList, T Function(dynamic json) decoder) {
-    List<T> decodedItemList = [];
-    for (var json in encodedItemList) {
-      T object = decoder(json);
-      decodedItemList.add(object);
+  FutureOr<Response> _loggingInterceptor(Request<T?> request, Response<T?> response) {
+    if (kDebugMode) {
+      print(
+          "----------------------------------------------------------------------------------------------------");
+      print("[REQUEST] - [${request.method} : ${request.url}]");
+      print("[RESPONSE] - [${response.body}]");
+      print(
+          "----------------------------------------------------------------------------------------------------");
     }
-    return decodedItemList;
+    return response;
   }
 
-  Future<List<T>> getItemList<T>(String route, T Function(dynamic json) decoder,
-      [bool isSecure = true]) async {
-    Response response = await get(
-      route,
-      headers: isSecure ? secureHeaders : null,
-      decoder: (response) {
-        return response is List ? _listDecoder<T>(response, decoder) : <T>[];
-      },
-    );
-
-    if (response.status.isOk) {
-      return response.body;
-    } else if (response.status.isUnauthorized) {
-      throw ExpiredSessionException();
-    } else if (response.status.isForbidden) {
-      throw UserLockedException();
+  FutureOr<Request<T>> _networkInterceptor(Request<T?> request) async {
+    if (await _networkInfo.isConnected) {
+      return request as Request<T>;
     } else {
-      throw UnknownErrorException();
+      throw NoInternetException(AppErrorMessages.noInternet);
     }
   }
 
-  Future<T> getSingleItem<T>(String route, T Function(dynamic json) decoder,
-      [bool isSecure = true]) async {
-    Response response = await get(
-      route,
-      headers: isSecure ? secureHeaders : null,
-      decoder: (response) {
-        return decoder(response);
-      },
-    );
-
-    if (response.isOk) {
-      return response.body;
-    } else if (response.status.isUnauthorized) {
-      throw ExpiredSessionException();
-    } else if (response.status.isForbidden) {
-      throw UserLockedException();
-    } else {
-      throw UnknownErrorException();
-    }
-  }*/
+  List<T> listDecoder(List list, T Function(dynamic json) decoder) {
+    return list.map((item) => decoder(item)).toList();
+  }
 }
