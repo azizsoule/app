@@ -1,5 +1,7 @@
 class AppEndpoints {
   AppEndpoints._();
 
-  static const baseUrl = "";
+  static const String baseUrl = "https://jsonplaceholder.typicode.com/";
+
+  static const String post = "/posts";
 }

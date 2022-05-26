@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get_connect.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
 
-class BaseService<T> extends GetConnect {
+class BaseService extends GetConnect {
   final INetworkInfo _networkInfo;
 
   BaseService(this._networkInfo);
@@ -17,12 +17,12 @@ class BaseService<T> extends GetConnect {
     httpClient.baseUrl = AppEndpoints.baseUrl;
     httpClient.defaultContentType = "application/json";
     httpClient.timeout = const Duration(seconds: 20);
-    httpClient.addResponseModifier<T>(_loggingInterceptor);
-    httpClient.addRequestModifier<T>(_networkInterceptor);
+    httpClient.addResponseModifier(_loggingInterceptor);
+    httpClient.addRequestModifier(_networkInterceptor);
     super.onInit();
   }
 
-  FutureOr<Response> _loggingInterceptor(Request<T?> request, Response<T?> response) {
+  FutureOr<Response> _loggingInterceptor(Request request, Response response) {
     if (kDebugMode) {
       print(
           "----------------------------------------------------------------------------------------------------");
@@ -34,15 +34,15 @@ class BaseService<T> extends GetConnect {
     return response;
   }
 
-  FutureOr<Request<T>> _networkInterceptor(Request<T?> request) async {
+  FutureOr<Request> _networkInterceptor(Request request) async {
     if (await _networkInfo.isConnected) {
-      return request as Request<T>;
+      return request;
     } else {
       throw NoInternetException(AppErrorMessages.noInternet);
     }
   }
 
-  List<T> listDecoder(List list, T Function(dynamic json) decoder) {
+  List<T> listDecoder<T>(List list, T Function(dynamic json) decoder) {
     return list.map((item) => decoder(item)).toList();
   }
 }
