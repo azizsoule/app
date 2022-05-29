@@ -1,3 +1,3 @@
 class AppStorageKeys {
-  
+  AppStorageKeys._();
 }

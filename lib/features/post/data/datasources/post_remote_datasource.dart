@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:app/core/datasource/datasource.dart';
 import 'package:app/core/error/error_messages.dart';
 import 'package:app/core/error/exceptions.dart';
@@ -36,10 +34,10 @@ class PostRemoteDatasource extends BaseService
     if (response.status.isOk) {
       return response.body;
     } else {
-      throw ServerException(
+      throw ServerException<String>(
         statusCode: response.statusCode,
         message: AppErrorMessages.errorOccured,
-        exceptionData: jsonEncode(response.body),
+        exceptionData: response.bodyString,
       );
     }
   }
@@ -53,10 +51,10 @@ class PostRemoteDatasource extends BaseService
     if (response.status.isOk) {
       return response.body as PostModel;
     } else {
-      throw ServerException(
+      throw ServerException<String>(
         statusCode: response.statusCode,
         message: AppErrorMessages.errorOccured,
-        exceptionData: response.body?.toJson(),
+        exceptionData: response.bodyString,
       );
     }
   }

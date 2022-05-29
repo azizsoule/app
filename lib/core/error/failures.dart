@@ -7,9 +7,9 @@ abstract class Failure extends Equatable {
 }
 
 // General failures
-class ServerFailure extends Failure {
+class ServerFailure<T> extends Failure {
   final int? statusCode;
-  final dynamic failureData;
+  final T? failureData;
 
   const ServerFailure(
       {this.statusCode, required String message, this.failureData})
@@ -28,6 +28,14 @@ class CacheFailure extends Failure {
 
 class NoInternetFailure extends Failure {
   const NoInternetFailure(String message) : super(message);
+
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class UnknownFailure extends Failure {
+  final Exception e;
+  const UnknownFailure(String message, this.e) : super(message);
 
   @override
   List<Object?> get props => throw UnimplementedError();

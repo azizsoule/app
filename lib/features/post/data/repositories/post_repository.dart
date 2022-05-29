@@ -26,16 +26,20 @@ class PostRepository implements IPostRepository {
 
   @override
   Future<Either<Failure, List<Post>>> getAll([bool remote = true]) async {
-    return await performOperation(() async {
-      return await _remoteDatasource.getAll();
-    });
+    return await performEitherRequest(
+      () async {
+        return await _remoteDatasource.getAll();
+      },
+    );
   }
 
   @override
   Future<Either<Failure, Post>> getById(int id, [bool remote = true]) async {
-    return await performOperation(() async {
-      return await _remoteDatasource.getById(id);
-    });
+    return await performEitherRequest(
+      () async {
+        return await _remoteDatasource.getById(id);
+      },
+    );
   }
 
   @override

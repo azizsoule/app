@@ -4,9 +4,9 @@ class BaseException implements Exception {
   BaseException(this.message);
 }
 
-class ServerException extends BaseException {
+class ServerException<T> extends BaseException {
   final int? statusCode;
-  final dynamic exceptionData;
+  final T? exceptionData;
 
   ServerException(
       {this.statusCode, this.exceptionData, required String message})

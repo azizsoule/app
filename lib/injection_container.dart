@@ -10,16 +10,16 @@ import 'package:hive/hive.dart';
 import 'core/network/network_info.dart';
 
 Future<void> injectDependencies() async {
-  // Use cases
+  //! Use cases
   // Inject usecases
   Get.lazyPut<GetSinglePostUseCase>(() => GetSinglePostUseCase(Get.find()));
   Get.lazyPut<GetAllPostsUseCase>(() => GetAllPostsUseCase(Get.find()));
 
-  // Repository
+  //! Repository
   // Inject repositories
   Get.lazyPut<IPostRepository>(() => PostRepository(Get.find(), Get.find()));
 
-  // Data sources
+  //! Data sources
   // Inject datasources
   Get.lazyPut<IPostLocalDatasource>(() => PostLocalDatasource());
   Get.lazyPut<IPostRemoteDatasource>(() => PostRemoteDatasource(Get.find()));
