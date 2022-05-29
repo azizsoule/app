@@ -1,4 +1,4 @@
-import 'package:app/features/post/presentation/widgets/home_screen.dart';
+import 'package:app/features/post/presentation/pages/home_screen.dart';
 import 'package:get/route_manager.dart';
 
 class AppPages {

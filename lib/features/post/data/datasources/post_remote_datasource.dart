@@ -36,7 +36,7 @@ class PostRemoteDatasource extends BaseService
     } else {
       throw ServerException<String>(
         statusCode: response.statusCode,
-        message: AppErrorMessages.errorOccured,
+        message: AppErrorMessages.noInternet,
         exceptionData: response.bodyString,
       );
     }
@@ -50,13 +50,9 @@ class PostRemoteDatasource extends BaseService
     );
     if (response.status.isOk) {
       return response.body as PostModel;
-    } else {
-      throw ServerException<String>(
-        statusCode: response.statusCode,
-        message: AppErrorMessages.errorOccured,
-        exceptionData: response.bodyString,
-      );
     }
+
+    throw Exception();
   }
 
   @override

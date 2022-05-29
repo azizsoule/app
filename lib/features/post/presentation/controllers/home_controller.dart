@@ -1,9 +1,9 @@
 import 'package:app/core/usecase/usecase.dart';
-import 'package:app/features/post/domain/entities/post.dart';
 import 'package:app/features/post/domain/usecases/get_all_post_use_case.dart';
+import 'package:app/features/post/presentation/states/post_state.dart';
 import 'package:get/get.dart';
 
-class HomeController extends GetxController with StateMixin<List<Post>> {
+class HomeController extends GetxController with StateMixin<PostState> {
   final GetAllPostsUseCase _allPostsUseCase = Get.find();
 
   @override
@@ -17,10 +17,10 @@ class HomeController extends GetxController with StateMixin<List<Post>> {
     final eitherPosts = await _allPostsUseCase(NoParams());
     eitherPosts.fold(
       (l) {
-        change(null, status: RxStatus.error());
+        change(PostState(null, l), status: RxStatus.error(l.message));
       },
       (r) {
-        change(r, status: RxStatus.success());
+        change(PostState(r, null), status: RxStatus.success());
       },
     );
   }
