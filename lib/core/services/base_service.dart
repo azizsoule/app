@@ -26,8 +26,8 @@ class BaseService extends GetConnect {
     if (kDebugMode) {
       print(
           "----------------------------------------------------------------------------------------------------");
-      print("[REQUEST] - [${request.method} : ${request.url}]");
-      print("[RESPONSE] - [${response.body}]");
+      print("[REQUEST : ${request.method.toUpperCase()}] - [${request.url}]");
+      print("[RESPONSE : ${response.statusCode}] - [${response.bodyString}]");
       print(
           "----------------------------------------------------------------------------------------------------");
     }
