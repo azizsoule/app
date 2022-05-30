@@ -1,17 +1,10 @@
 import 'dart:async';
-import 'package:app/core/error/error_messages.dart';
-import 'package:app/core/error/exceptions.dart';
-import 'package:app/core/network/network_info.dart';
 import 'package:app/core/routes/app_endpoints.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get_connect.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
 
 class BaseService extends GetConnect {
-  final INetworkInfo _networkInfo;
-
-  BaseService(this._networkInfo);
-
   @override
   void onInit() {
     httpClient.baseUrl = AppEndpoints.baseUrl;
@@ -36,15 +29,5 @@ class BaseService extends GetConnect {
           "---------------------------------------------------------------------------------------------------------------------------");
     }
     return response;
-  }
-
-  void _networkInterceptor() async {
-    if (!(await _networkInfo.isConnected)) {
-      throw NoInternetException(AppErrorMessages.noInternet);
-    }
-  }
-
-  List<T> listDecoder<T>(List list, T Function(dynamic json) decoder) {
-    return list.map((item) => decoder(item)).toList();
   }
 }

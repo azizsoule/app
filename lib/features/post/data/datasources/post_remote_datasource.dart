@@ -1,17 +1,18 @@
 import 'package:app/core/datasource/datasource.dart';
 import 'package:app/core/error/error_messages.dart';
 import 'package:app/core/error/exceptions.dart';
-import 'package:app/core/network/network_info.dart';
 import 'package:app/core/routes/app_endpoints.dart';
-import 'package:app/core/services/base_service.dart';
+import 'package:app/core/services/http_helper.dart';
 import 'package:app/features/post/data/models/post_model.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
+import '../../../../core/functions/functions.dart';
 
 abstract class IPostRemoteDatasource extends Datasource<PostModel, int> {}
 
-class PostRemoteDatasource extends BaseService
-    implements IPostRemoteDatasource {
-  PostRemoteDatasource(INetworkInfo networkInfo) : super(networkInfo);
+class PostRemoteDatasource implements IPostRemoteDatasource {
+  PostRemoteDatasource(this._httpHelper);
+
+  final HttpHelper _httpHelper;
 
   @override
   Future<bool> deleteAll() {
@@ -27,7 +28,7 @@ class PostRemoteDatasource extends BaseService
 
   @override
   Future<List<PostModel>> getAll() async {
-    final Response response = await get(
+    final Response response = await _httpHelper.get(
       AppEndpoints.post,
       decoder: (list) => listDecoder(list, (json) => PostModel.fromJson(json)),
     );
@@ -36,7 +37,7 @@ class PostRemoteDatasource extends BaseService
     } else {
       throw ServerException<String>(
         statusCode: response.statusCode,
-        message: AppErrorMessages.noInternet,
+        message: AppErrorMessages.errorOccured,
         exceptionData: response.bodyString,
       );
     }
@@ -44,7 +45,7 @@ class PostRemoteDatasource extends BaseService
 
   @override
   Future<PostModel> getById(int id) async {
-    final Response<PostModel> response = await get(
+    final Response<PostModel> response = await _httpHelper.get(
       "${AppEndpoints.post}/$id",
       decoder: (json) => PostModel.fromJson(json),
     );

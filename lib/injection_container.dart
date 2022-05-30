@@ -1,3 +1,5 @@
+import 'package:app/core/services/base_service.dart';
+import 'package:app/core/services/http_helper.dart';
 import 'package:app/features/post/data/datasources/post_local_datasource.dart';
 import 'package:app/features/post/data/datasources/post_remote_datasource.dart';
 import 'package:app/features/post/data/repositories/post_repository.dart';
@@ -26,7 +28,9 @@ Future<void> injectDependencies() async {
 
   //! Core
   // Inject core components
+  Get.lazyPut<BaseService>(() => BaseService());
   Get.lazyPut<INetworkInfo>(() => NetworkInfo(Get.find()));
+  Get.lazyPut<HttpHelper>(() => HttpHelper(Get.find(), Get.find()));
 
   //! External
   // Inject externals components

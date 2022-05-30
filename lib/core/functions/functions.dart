@@ -33,3 +33,7 @@ Future<Either<Failure, T>> performEitherRequest<T, E>(
     );
   }
 }
+
+List<T> listDecoder<T>(List list, T Function(dynamic json) decoder) {
+  return list.map((item) => decoder(item)).toList();
+}
