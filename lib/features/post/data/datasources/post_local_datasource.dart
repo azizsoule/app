@@ -1,14 +1,10 @@
 import 'package:app/core/datasource/datasource.dart';
-import 'package:app/features/feature_1/data/models/entity_model.dart';
-import 'package:hive/hive.dart';
+import 'package:app/features/post/data/models/post_model.dart';
 
-abstract class IEntityLocalDatasource extends Datasource<EntityModel, void> {}
+abstract class IPostLocalDatasource extends Datasource<PostModel, int> {}
 
-class EntityLocalDatasource implements IEntityLocalDatasource {
-  final HiveInterface _hiveInterface;
-
-  EntityLocalDatasource(this._hiveInterface);
-
+class PostLocalDatasource implements IPostLocalDatasource {
+  
   @override
   Future<bool> deleteAll() {
     // TODO: implement deleteAll
@@ -16,31 +12,31 @@ class EntityLocalDatasource implements IEntityLocalDatasource {
   }
 
   @override
-  Future<bool> deleteById(void id) {
+  Future<bool> deleteById(int id) {
     // TODO: implement deleteById
     throw UnimplementedError();
   }
 
   @override
-  Future<List<EntityModel>> getAll() {
+  Future<List<PostModel>> getAll() {
     // TODO: implement getAll
     throw UnimplementedError();
   }
 
   @override
-  Future<EntityModel> getById(void id) {
+  Future<PostModel> getById(int id) {
     // TODO: implement getById
     throw UnimplementedError();
   }
 
   @override
-  Future<EntityModel> save(EntityModel object) {
+  Future<PostModel> save(PostModel object) {
     // TODO: implement save
     throw UnimplementedError();
   }
 
   @override
-  Future<EntityModel> update(EntityModel object) {
+  Future<PostModel> update(PostModel object) {
     // TODO: implement update
     throw UnimplementedError();
   }

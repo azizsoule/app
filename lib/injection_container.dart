@@ -1,28 +1,36 @@
-import 'package:app/features/feature_1/data/datasources/entity_local_datasource.dart';
-import 'package:app/features/feature_1/data/datasources/entity_remote_datasource.dart';
-import 'package:app/features/feature_1/data/repositories/entity_repository.dart';
-import 'package:app/features/feature_1/domain/repositories/entity_repository_interface.dart';
+import 'package:app/core/services/base_service.dart';
+import 'package:app/core/services/http_helper.dart';
+import 'package:app/features/post/data/datasources/post_local_datasource.dart';
+import 'package:app/features/post/data/datasources/post_remote_datasource.dart';
+import 'package:app/features/post/data/repositories/post_repository.dart';
+import 'package:app/features/post/domain/repositories/post_repository_interface.dart';
+import 'package:app/features/post/domain/usecases/get_all_post_use_case.dart';
+import 'package:app/features/post/domain/usecases/get_single_post_use_case.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'core/network/network_info.dart';
 
-Future<void> init() async {
-  // Use cases
+Future<void> injectDependencies() async {
+  //! Use cases
   // Inject usecases
+  Get.lazyPut<GetSinglePostUseCase>(() => GetSinglePostUseCase(Get.find()));
+  Get.lazyPut<GetAllPostsUseCase>(() => GetAllPostsUseCase(Get.find()));
 
-  // Repository
+  //! Repository
   // Inject repositories
-  Get.lazyPut<IEntityRepository>(() => EntityRepository(Get.find(), Get.find()));
+  Get.lazyPut<IPostRepository>(() => PostRepository(Get.find(), Get.find()));
 
-  // Data sources
+  //! Data sources
   // Inject datasources
-  Get.lazyPut<IEntityLocalDatasource>(() => EntityLocalDatasource(Get.find()));
-  Get.lazyPut<IEntityRemoteDatasource>(() => EntityRemoteDatasource(Get.find()));
+  Get.lazyPut<IPostLocalDatasource>(() => PostLocalDatasource());
+  Get.lazyPut<IPostRemoteDatasource>(() => PostRemoteDatasource(Get.find()));
 
   //! Core
   // Inject core components
+  Get.lazyPut<BaseService>(() => BaseService());
   Get.lazyPut<INetworkInfo>(() => NetworkInfo(Get.find()));
+  Get.lazyPut<HttpHelper>(() => HttpHelper(Get.find(), Get.find()));
 
   //! External
   // Inject externals components

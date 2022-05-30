@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:app/features/post/presentation/pages/home_screen.dart';
 import 'package:get/route_manager.dart';
 
 class AppPages {
@@ -9,7 +9,7 @@ class AppPages {
   static final List<GetPage> pages = [
     GetPage(
       name: home,
-      page: () => Container(),
+      page: () => const HomeScreen(),
     ),
   ];
 }

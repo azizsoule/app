@@ -21,7 +21,7 @@ class NetworkInfo implements INetworkInfo {
 
   Future<bool> get _hasConnection async {
     try {
-      final result = await InternetAddress.lookup('https://www.google.com');
+      final result = await InternetAddress.lookup('www.google.com');
       return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
     } on SocketException catch (_) {
       return false;

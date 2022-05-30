@@ -1,8 +1,9 @@
 import 'package:app/core/error/exceptions.dart';
 import 'package:app/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 
-Future<Either<Failure, T>> performOperation<T>(
+Future<Either<Failure, T>> performEitherRequest<T, E>(
     Future<T> Function() operation) async {
   try {
     final T result = await operation();
@@ -15,13 +16,24 @@ Future<Either<Failure, T>> performOperation<T>(
     return Left(
       NoInternetFailure(e.message),
     );
-  } on ServerException catch (e) {
+  } on ServerException<E> catch (e) {
     return Left(
-      ServerFailure(
+      ServerFailure<E>(
         statusCode: e.statusCode,
         message: e.message,
         failureData: e.exceptionData,
       ),
     );
+  } on Exception catch (e) {
+    if (kDebugMode) {
+      print(e);
+    }
+    return Left(
+      UnknownFailure(e.toString(), e),
+    );
   }
+}
+
+List<T> listDecoder<T>(List list, T Function(dynamic json) decoder) {
+  return list.map((item) => decoder(item)).toList();
 }
