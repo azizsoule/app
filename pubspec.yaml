@@ -30,7 +30,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons:
@@ -51,8 +50,7 @@ dependencies:
   flutter_gen: 
 
   # You can use it to store data in local.
-  hive:
-  hive_flutter:
+  get_storage: 
 
 dev_dependencies:
   flutter_test:
@@ -64,9 +62,6 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: 
-
-  hive_generator:
-  build_runner:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

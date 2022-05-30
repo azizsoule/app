@@ -8,7 +8,7 @@ import 'package:app/features/post/domain/usecases/get_all_post_use_case.dart';
 import 'package:app/features/post/domain/usecases/get_single_post_use_case.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
+import 'package:get_storage/get_storage.dart';
 import 'core/network/network_info.dart';
 
 Future<void> injectDependencies() async {
@@ -23,7 +23,7 @@ Future<void> injectDependencies() async {
 
   //! Data sources
   // Inject datasources
-  Get.lazyPut<IPostLocalDatasource>(() => PostLocalDatasource());
+  Get.lazyPut<IPostLocalDatasource>(() => PostLocalDatasource(Get.find()));
   Get.lazyPut<IPostRemoteDatasource>(() => PostRemoteDatasource(Get.find()));
 
   //! Core
@@ -34,6 +34,6 @@ Future<void> injectDependencies() async {
 
   //! External
   // Inject externals components
-  Get.lazyPut<HiveInterface>(() => Hive);
+  Get.lazyPut<GetStorage>(() => GetStorage());
   Get.lazyPut<Connectivity>(() => Connectivity());
 }

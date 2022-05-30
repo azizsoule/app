@@ -1,10 +1,14 @@
 import 'package:app/core/datasource/datasource.dart';
 import 'package:app/features/post/data/models/post_model.dart';
+import 'package:get_storage/get_storage.dart';
 
 abstract class IPostLocalDatasource extends Datasource<PostModel, int> {}
 
 class PostLocalDatasource implements IPostLocalDatasource {
-  
+  final GetStorage _box;
+
+  PostLocalDatasource(this._box);
+
   @override
   Future<bool> deleteAll() {
     // TODO: implement deleteAll

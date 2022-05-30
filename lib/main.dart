@@ -4,10 +4,16 @@ import 'package:app/core/routes/app_routes.dart';
 import 'package:app/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 void main() {
+  initPlugins();
   injectDependencies();
   runApp(const MyApp());
+}
+
+void initPlugins() async {
+  await GetStorage.init();
 }
 
 class MyApp extends StatelessWidget {
